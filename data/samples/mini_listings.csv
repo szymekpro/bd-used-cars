@@ -1,0 +1,47 @@
+listing_id,vin,price,year,mileage,make_name,model_name,body_type,fuel_type,city,daysonmarket,horsepower,franchise_dealer,frame_damaged,has_accidents,is_cpo,listed_date,back_legroom
+1001,1HGCM82633A000001,18500,2016,42000,Honda,Accord,Sedan,Gasoline,Houston,12,185,True,False,False,True,2020-09-01,38.3 in
+1002,1FA6P8CF5L5000002,24900,2018,31000,Ford,Mustang,Coupe,Gasoline,Austin,5,310,True,False,False,False,2020-09-10,30.5 in
+1003,4T1B11HK5KU000003,16200,2015,68000,Toyota,Camry,Sedan,Gasoline,Chicago,21,178,True,False,True,False,2020-08-20,38.0 in
+1004,5NPE24AF5FH000004,9800,2012,112000,Hyundai,Sonata,Sedan,Gasoline,Miami,40,200,False,False,True,False,2020-08-01,--
+1005,1C4RJFBG5LC000005,32500,2019,18000,Jeep,Grand Cherokee,SUV / Crossover,Gasoline,Houston,8,295,True,False,False,True,2020-09-12,38.6 in
+1006,1FTFW1E50LFA00006,38900,2018,45000,Ford,F-150,Pickup Truck,Gasoline,Dallas,15,395,True,False,False,False,2020-09-03,43.6 in
+1007,WBA8E9G59GNU00007,27400,2016,52000,BMW,3 Series,Sedan,Gasoline,Chicago,18,248,True,False,False,True,2020-08-28,35.1 in
+1008,3FA6P0HD8LR000008,14500,2017,61000,Ford,Fusion,Sedan,Gasoline,Austin,27,175,False,False,False,False,2020-08-15,38.3 in
+1009,5YJ3E1EA7LF000009,39900,2019,22000,Tesla,Model 3,Sedan,Electric,Miami,6,283,True,False,False,False,2020-09-14,--
+1010,1G1ZD5ST5LF000010,16800,2018,39000,Chevrolet,Malibu,Sedan,Gasoline,Houston,11,160,True,False,False,True,2020-09-08,38.1 in
+1011,JM1GL1VM5L1000011,19200,2018,28000,Mazda,Mazda6,Sedan,Gasoline,Austin,9,187,True,False,False,False,2020-09-11,38.7 in
+1012,KNMAT2MV5KP000012,21400,2019,24000,Nissan,Rogue,SUV / Crossover,Gasoline,Dallas,4,170,True,False,False,True,2020-09-16,37.9 in
+1013,1C6SRFFT5LN000013,41200,2020,8000,Ram,1500,Pickup Truck,Gasoline,Houston,3,395,True,False,False,False,2020-09-18,45.2 in
+1014,WA1LAAF73JD000014,28900,2017,47000,Audi,Q5,SUV / Crossover,Gasoline,Chicago,19,252,True,False,True,True,2020-08-22,37.8 in
+1015,2T3RFREV5LW000015,23300,2019,21000,Toyota,RAV4,SUV / Crossover,Gasoline,Miami,7,203,True,False,False,True,2020-09-09,37.8 in
+1016,1GNSKCKC5KR000016,35600,2018,36000,Chevrolet,Tahoe,SUV / Crossover,Gasoline,Dallas,13,355,True,False,False,False,2020-09-02,39.0 in
+1017,4S3BMHB68L3000017,20500,2019,19000,Subaru,Outback,SUV / Crossover,Gasoline,Chicago,10,182,True,False,False,False,2020-09-06,39.1 in
+1018,1ZVBP8CF5E5000018,11200,2013,98000,Ford,Mustang,Coupe,Gasoline,Austin,33,305,False,True,True,False,2020-07-28,30.5 in
+1019,JTDKN3DU5A0000019,7400,2010,141000,Toyota,Prius,Hatchback,Hybrid,Houston,44,134,False,False,True,False,2020-07-20,36.0 in
+1020,WDDGF8AB8EA000020,9800,2014,89000,Mercedes-Benz,C-Class,Sedan,Gasoline,Miami,29,201,True,False,True,False,2020-08-05,33.0 in
+1021,,6200,2008,156000,Honda,Civic,Sedan,Gasoline,Austin,51,140,False,False,True,False,2020-07-12,37.2 in
+1022,1HGCV1F34LA000022,26800,2020,6000,Honda,Accord,Sedan,Gasoline,Houston,2,192,True,False,False,False,2020-09-19,38.3 in
+1023,1FMCU0GD5LUA00023,17600,2017,54000,Ford,Escape,SUV / Crossover,Gasoline,Dallas,16,168,True,False,False,True,2020-08-30,37.3 in
+1024,5XXGT4L30LG000024,15400,2018,43000,Kia,Optima,Sedan,Gasoline,Chicago,14,185,False,False,False,False,2020-09-04,35.6 in
+1025,3KPF24AD5KE000025,12800,2016,77000,Kia,Forte,Sedan,Gasoline,Miami,22,147,False,False,True,False,2020-08-18,35.4 in
+1026,1GCUYDED5LZ000026,44500,2019,27000,Chevrolet,Silverado 1500,Pickup Truck,Gasoline,Houston,9,355,True,False,False,True,2020-09-07,43.4 in
+1027,WP1AB2A55JLB00027,31200,2017,41000,Porsche,Macan,SUV / Crossover,Gasoline,Austin,17,340,True,False,False,False,2020-08-25,35.0 in
+1028,SALWR2RV5KA000028,33800,2018,33000,Land Rover,Range Rover Evoque,SUV / Crossover,Gasoline,Miami,12,246,True,False,False,True,2020-09-05,36.6 in
+1029,JF2SJADC5LH000029,24100,2019,16000,Subaru,Forester,SUV / Crossover,Gasoline,Chicago,6,182,True,False,False,False,2020-09-13,39.4 in
+1030,1N4BL4BV5LC000030,21900,2019,25000,Nissan,Altima,Sedan,Gasoline,Dallas,8,188,True,False,False,True,2020-09-10,36.8 in
+1031,2HKRM4H75KH000031,20100,2018,37000,Honda,CR-V,SUV / Crossover,Gasoline,Houston,11,190,True,False,False,True,2020-09-01,39.3 in
+1032,1C4HJXDG5LW000032,27600,2019,29000,Jeep,Cherokee,SUV / Crossover,Gasoline,Austin,13,180,True,False,True,False,2020-08-29,40.3 in
+1033,5TFHY5F14LX000033,36400,2020,9000,Toyota,Tundra,Pickup Truck,Gasoline,Dallas,4,381,True,False,False,False,2020-09-15,42.3 in
+1034,WVWZZZ3CZLE000034,18900,2018,34000,Volkswagen,Jetta,Sedan,Gasoline,Chicago,15,147,True,False,False,False,2020-08-27,38.1 in
+1035,YV4A22PK5J1000035,24800,2017,48000,Volvo,XC60,SUV / Crossover,Gasoline,Miami,20,250,True,False,False,True,2020-08-16,37.4 in
+1036,1B7HF16Y8VS000036,5400,2004,188000,Dodge,Ram 1500,Pickup Truck,Gasoline,Houston,60,215,False,True,True,False,2020-06-30,--
+1037,JA4AZ3A35LZ000037,22300,2019,23000,Mitsubishi,Outlander,SUV / Crossover,Gasoline,Austin,9,166,False,False,False,False,2020-09-08,37.3 in
+1038,KM8J3CA46LU000038,23600,2019,18000,Hyundai,Tucson,SUV / Crossover,Gasoline,Dallas,7,161,True,False,False,True,2020-09-12,38.2 in
+1039,1GYS4BKJ5LR000039,61200,2019,21000,Cadillac,Escalade,SUV / Crossover,Gasoline,Miami,10,420,True,False,False,False,2020-09-06,45.3 in
+1040,WBAJA5C55KWW00040,26500,2018,39000,BMW,X1,SUV / Crossover,Gasoline,Chicago,14,228,True,False,False,True,2020-08-26,37.0 in
+1001,1HGCM82633A000001,17900,2016,45000,Honda,Accord,Sedan,Gasoline,Houston,20,185,True,False,False,True,2020-09-01,38.3 in
+1041,,0,2015,10000,Ford,Focus,Sedan,Gasoline,Austin,3,160,True,False,False,False,2020-09-01,38 in
+,ZZZ,15000,2016,20000,Toyota,Corolla,Sedan,Gasoline,Dallas,4,132,True,False,False,False,2020-09-01,38 in
+1042,BADPRICE,nie-liczba,2017,20000,Kia,Soul,Hatchback,Gasoline,Houston,5,130,False,False,False,False,2020-09-02,40.1 in
+1043,MILEAGEWEIRD,13200,2014,--,Nissan,Sentra,Sedan,Gasoline,Austin,18,130,False,False,False,False,2020-08-10,37 in
+1044,YEARWEIRD,21000,1975,80000,Chevrolet,C10,Pickup Truck,Gasoline,Dallas,25,150,False,False,False,False,2020-08-01,40 in
