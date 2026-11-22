@@ -1,0 +1,158 @@
+{
+  "note": "Pierwsze 3000000 wierszy prawdziwego CSV, nie cały zbiór (ok. 3 mln ogłoszeń).",
+  "cleaning": {
+    "rows_read": 3000000,
+    "dropped_no_id": 0,
+    "dropped_bad_price": 45,
+    "dropped_duplicate_id": 40,
+    "rows_kept": 2999915,
+    "source": "C:\\Users\\huber\\Desktop\\STUDIA\\SEM9\\BIG DATA\\bd-used-cars\\data\\real\\used_cars_data.csv"
+  },
+  "mongo": {
+    "ok": true,
+    "upserted": 0,
+    "matched": 2999915,
+    "documents": 2999957
+  },
+  "analyses": {
+    "1_rozkład_ceny": {
+      "n": 2999915,
+      "mean": 29910.56,
+      "median": 26477.0,
+      "std": 18509.82,
+      "min": 165.0,
+      "max": 999999.0,
+      "skew": 4.71
+    },
+    "2_cena_a_wiek_i_przebieg": {
+      "age_years": {
+        "n": 2996238,
+        "pearson_r": -0.44
+      },
+      "mileage": {
+        "n": 2855517,
+        "pearson_r": -0.48
+      }
+    },
+    "3_cena_wg_nadwozia": [
+      {
+        "body_type": "SUV / Crossover",
+        "n": 1416370,
+        "median_price": 27632.5,
+        "mean_price": 30717.7
+      },
+      {
+        "body_type": "Sedan",
+        "n": 741998,
+        "median_price": 19978.0,
+        "mean_price": 22384.12
+      },
+      {
+        "body_type": "Pickup Truck",
+        "n": 474586,
+        "median_price": 40287.5,
+        "mean_price": 40588.65
+      },
+      {
+        "body_type": "Hatchback",
+        "n": 88365,
+        "median_price": 16892.0,
+        "mean_price": 17384.55
+      },
+      {
+        "body_type": "Minivan",
+        "n": 79800,
+        "median_price": 24444.0,
+        "mean_price": 24743.13
+      },
+      {
+        "body_type": "Coupe",
+        "n": 71583,
+        "median_price": 28999.0,
+        "mean_price": 40270.99
+      },
+      {
+        "body_type": "Van",
+        "n": 47165,
+        "median_price": 27050.0,
+        "mean_price": 29830.37
+      },
+      {
+        "body_type": "Wagon",
+        "n": 40502,
+        "median_price": 16998.5,
+        "mean_price": 20336.21
+      },
+      {
+        "body_type": "Convertible",
+        "n": 26005,
+        "median_price": 29399.0,
+        "mean_price": 46108.88
+      }
+    ],
+    "4_cena_wg_paliwa": [
+      {
+        "fuel_type": "Gasoline",
+        "n": 2598332,
+        "median_price": 25995.0,
+        "mean_price": 29289.09
+      },
+      {
+        "fuel_type": "Flex Fuel Vehicle",
+        "n": 155988,
+        "median_price": 26306.5,
+        "mean_price": 27446.14
+      },
+      {
+        "fuel_type": "Hybrid",
+        "n": 76007,
+        "median_price": 26949.0,
+        "mean_price": 27251.47
+      },
+      {
+        "fuel_type": "Diesel",
+        "n": 44451,
+        "median_price": 49175.0,
+        "mean_price": 43810.79
+      },
+      {
+        "fuel_type": "Biodiesel",
+        "n": 25854,
+        "median_price": 59638.5,
+        "mean_price": 58487.39
+      },
+      {
+        "fuel_type": "Electric",
+        "n": 16415,
+        "median_price": 34020.0,
+        "mean_price": 39520.19
+      },
+      {
+        "fuel_type": "Compressed Natural Gas",
+        "n": 146,
+        "median_price": 12998.0,
+        "mean_price": 17614.92
+      },
+      {
+        "fuel_type": "Propane",
+        "n": 6,
+        "median_price": 4695.0,
+        "mean_price": 5830.83
+      }
+    ],
+    "5_cena_vs_moc": {
+      "n": 2827554,
+      "pearson_r": 0.63
+    }
+  },
+  "files": {
+    "sample": "C:\\Users\\huber\\Desktop\\STUDIA\\SEM9\\BIG DATA\\bd-used-cars\\output\\dataset\\sample_clean.csv",
+    "plots": [
+      "C:\\Users\\huber\\Desktop\\STUDIA\\SEM9\\BIG DATA\\bd-used-cars\\output\\dataset\\cena_histogram.png",
+      "C:\\Users\\huber\\Desktop\\STUDIA\\SEM9\\BIG DATA\\bd-used-cars\\output\\dataset\\cena_nadwozie.png",
+      "C:\\Users\\huber\\Desktop\\STUDIA\\SEM9\\BIG DATA\\bd-used-cars\\output\\dataset\\cena_a_uzycie.png",
+      "C:\\Users\\huber\\Desktop\\STUDIA\\SEM9\\BIG DATA\\bd-used-cars\\output\\dataset\\cena_paliwo.png",
+      "C:\\Users\\huber\\Desktop\\STUDIA\\SEM9\\BIG DATA\\bd-used-cars\\output\\dataset\\cena_moc.png"
+    ]
+  }
+}

@@ -10,9 +10,17 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from src.analyze import run_analyses
-from src.clean import clean_chunk
-from src.config import CHUNK_SIZE, DEFAULT_MAX_ROWS, MINI_CSV, OUTPUT_DIR, RAW_CSV
+from src.analyze import analyze_dataset, run_otomoto
+from src.clean_dataset import clean_dataset_chunk
+from src.config import (
+    CHUNK_SIZE,
+    DEFAULT_MAX_ROWS_DATASET,
+    DEFAULT_MAX_ROWS_OTOMOTO,
+    DATASET_OUTPUT_DIR,
+    MINI_CSV,
+    RAW_CSV,
+)
+from src.plots import group_bar, price_vs_horsepower
 from src.store import upsert_listings
 
 
@@ -34,7 +42,7 @@ def load_clean(path: Path, max_rows: int, chunk_size: int) -> tuple[pd.DataFrame
             break
         chunk = chunk.iloc[: max_rows - seen]
         seen += len(chunk)
-        cleaned, stats = clean_chunk(chunk)
+        cleaned, stats = clean_dataset_chunk(chunk)
         for key in totals:
             totals[key] += stats[key]
         if len(cleaned):
@@ -131,27 +139,33 @@ def save_plots(df: pd.DataFrame, out_dir: Path) -> list[str]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="MVP: próbka ogłoszeń aut używanych")
-    parser.add_argument("--input", help="Ścieżka do CSV. Domyślnie data/real, a jak go nie ma — mini próbka.")
-    parser.add_argument("--max-rows", type=int, default=DEFAULT_MAX_ROWS)
+    parser = argparse.ArgumentParser(description="Analiza ofert aut używanych: dataset z CSV i oferty otomoto.pl z bazy.")
+    parser.add_argument("--input", help="CSV datasetu. Domyślnie data/real, a jak go nie ma — mini próbka.")
+    parser.add_argument("--max-rows-dataset", type=int, default=DEFAULT_MAX_ROWS_DATASET, help="Ile pierwszych wierszy CSV datasetu.")
+    parser.add_argument("--max-rows-otomoto", type=int, default=DEFAULT_MAX_ROWS_OTOMOTO, help="Ile ofert otomoto z bazy (domyślnie wszystkie).")
     parser.add_argument("--chunk-size", type=int, default=CHUNK_SIZE)
-    parser.add_argument("--skip-mongo", action="store_true")
+    parser.add_argument("--skip-mongo", action="store_true", help="Bez MongoDB, także dla otomoto.")
     args = parser.parse_args()
 
     path = resolve_input(args.input)
     if not path.exists():
         raise SystemExit(f"Nie ma pliku: {path}")
 
-    df, clean_stats = load_clean(path, args.max_rows, args.chunk_size)
-    analyses = run_analyses(df)
+    df, clean_stats = load_clean(path, args.max_rows_dataset, args.chunk_size)
+    analyses = analyze_dataset(df)
     mongo = {"ok": False, "skipped": True}
     if not args.skip_mongo:
         mongo = upsert_listings(df)
 
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    sample_path = OUTPUT_DIR / "sample_clean.csv"
+    DATASET_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    sample_path = DATASET_OUTPUT_DIR / "sample_clean.csv"
     df.to_csv(sample_path, index=False)
-    plots = save_plots(df, OUTPUT_DIR)
+    plots = save_plots(df, DATASET_OUTPUT_DIR)
+    extra_plots = [
+        group_bar(df, "fuel_type", DATASET_OUTPUT_DIR / "cena_paliwo.png", "USD", "Mediana ceny wg paliwa", top=10),
+        price_vs_horsepower(df, DATASET_OUTPUT_DIR / "cena_moc.png", "USD"),
+    ]
+    plots += [p for p in extra_plots if p]
     if path.resolve() == MINI_CSV.resolve():
         note = "Mini próbka sprawdza tylko ścieżkę. Te liczby nie opisują rynku."
     else:
@@ -166,8 +180,10 @@ def main() -> None:
         "analyses": analyses,
         "files": {"sample": str(sample_path), "plots": plots},
     }
-    report_path = OUTPUT_DIR / "statystyki.json"
+    report_path = DATASET_OUTPUT_DIR / "statystyki.json"
     report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    otomoto = run_otomoto(max_rows=args.max_rows_otomoto, skip_mongo=args.skip_mongo)
 
     price = analyses["1_rozkład_ceny"]
     usage = analyses["2_cena_a_wiek_i_przebieg"]
@@ -199,6 +215,15 @@ def main() -> None:
         print("Mongo: pominięte (--skip-mongo)")
     else:
         print(f"Mongo niedostępne, analizy i tak zapisane. Powód: {mongo.get('error')}")
+    if otomoto.get("ok"):
+        print(
+            f"Otomoto: {otomoto['n']} ofert, mediana ceny {otomoto['price']['median']} PLN, "
+            f"korelacja cena–wiek r={otomoto['usage']['age_years']['pearson_r']}"
+        )
+    elif otomoto.get("skipped"):
+        print("Otomoto: pominięte (--skip-mongo)")
+    else:
+        print(f"Otomoto: pominięte. Powód: {otomoto.get('error')}")
     print(f"Wynik: {report_path}")
 
 

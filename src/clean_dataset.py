@@ -77,7 +77,7 @@ COLUMN_ORDER = [
 ]
 
 
-def clean_chunk(df: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
+def clean_dataset_chunk(df: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
     stats = {
         "rows_read": int(len(df)),
         "dropped_no_id": 0,

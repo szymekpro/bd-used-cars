@@ -4,7 +4,7 @@ import pandas as pd
 from pymongo import MongoClient, ReplaceOne
 from pymongo.errors import PyMongoError
 
-from src.config import COLLECTION, DB_NAME, MONGO_URI
+from src.config import COLLECTION, DB_NAME, MONGO_PRIVATE_URI, MONGO_URI, OTOMOTO_COLLECTION, OTOMOTO_DB_NAME
 
 
 def _plain(value):
@@ -56,3 +56,42 @@ def upsert_listings(df: pd.DataFrame) -> dict:
         }
     finally:
         client.close()
+
+
+def _upsert_docs(docs: list[dict], uri: str, db_name: str, collection: str) -> dict:
+    client = MongoClient(uri, serverSelectionTimeoutMS=4000)
+    try:
+        client.admin.command("ping")
+        col = client[db_name][collection]
+        if not docs:
+            return {"ok": True, "upserted": 0, "matched": 0, "documents": col.count_documents({})}
+        ops = [ReplaceOne({"_id": doc["_id"]}, doc, upsert=True) for doc in docs]
+        result = col.bulk_write(ops, ordered=False)
+        return {
+            "ok": True,
+            "upserted": result.upserted_count,
+            "matched": result.matched_count,
+            "documents": col.count_documents({}),
+        }
+    except PyMongoError:
+        return {"ok": False, "error": f"brak połączenia z MongoDB pod adresem {uri} — uruchom: docker compose up -d"}
+    finally:
+        client.close()
+
+
+def upsert_otomoto(docs: list[dict]) -> dict:
+    """Baza prywatna, baza otomoto: klucz listing_id (identyfikator oferty w serwisie, jak w datasecie)."""
+    for doc in docs:
+        doc["_id"] = doc["listing_id"]
+    return _upsert_docs(docs, MONGO_PRIVATE_URI, OTOMOTO_DB_NAME, OTOMOTO_COLLECTION)
+
+
+def read_otomoto(max_rows: int | None = None) -> pd.DataFrame:
+    """Stan kolekcji ofert otomoto (nie tylko ostatni przebieg). max_rows=None: wszystkie."""
+    client = MongoClient(MONGO_PRIVATE_URI, serverSelectionTimeoutMS=4000)
+    try:
+        client.admin.command("ping")
+        rows = list(client[OTOMOTO_DB_NAME][OTOMOTO_COLLECTION].find({}, {"_id": 0}).limit(max_rows or 0))
+    finally:
+        client.close()
+    return pd.DataFrame(rows)

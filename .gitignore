@@ -1,9 +1,13 @@
 .venv/
+.idea/
 __pycache__/
 *.pyc
 data/raw/
 data/real/
-output/
+sprawozdanie/
+# duzy plik (>100 MB), GitHub go odrzuci
+output/**/sample_clean.csv
+output/sample_clean.csv
 .pytest_cache/
 AGENTS.md
 konsultacje/
