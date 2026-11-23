@@ -16,3 +16,6 @@ certs/
 output/*.log
 output/hadoop/sample/
 *.crc
+output/hadoop/*/mongo_load.json
+docs
+.claude/

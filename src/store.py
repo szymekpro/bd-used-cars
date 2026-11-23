@@ -5,6 +5,7 @@ from pymongo import MongoClient, ReplaceOne
 from pymongo.errors import PyMongoError
 
 from src.config import (
+    AGG_DB_NAME,
     CA_FILE,
     COLLECTION,
     DB_NAME,
@@ -82,6 +83,10 @@ def upsert_otomoto(docs: list[dict]) -> dict:
     for doc in docs:
         doc["_id"] = doc["listing_id"]
     return _upsert_docs(docs, MONGO_PRIVATE_URI, OTOMOTO_DB_NAME, OTOMOTO_COLLECTION, "localhost:27018")
+
+
+def upsert_aggregates(collection: str, docs: list[dict]) -> dict:
+    return _upsert_docs(docs, MONGO_PRIVATE_URI, AGG_DB_NAME, collection, "localhost:27018")
 
 
 def read_otomoto(max_rows: int | None = None) -> pd.DataFrame:

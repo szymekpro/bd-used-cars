@@ -9,11 +9,17 @@ Imports used-car listings into MongoDB, cleans them, and computes price statisti
 
 ## Setup
 
+Requires Python 3, Docker Desktop and Git Bash (for the `.sh` scripts).
+
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python -m pip install -r requirements.txt
+bash scripts/gen_certs.sh
+copy .env.example .env
 docker compose up -d
 ```
+
+Set your own passwords in `.env` before `docker compose up -d`. The containers need `certs/` and `.env` on the first start (see Security).
 
 ## Analysis
 
@@ -53,7 +59,7 @@ kaggle datasets download -d ananaymital/us-used-cars-dataset -p data/real --unzi
 - Waits `--delay` seconds between pages and `--batch-pause` seconds every `--batch` offers.
 - Stops on HTTP 403/429, after `--max-failures` (default 5) failed pages in a row, or on an empty page.
 - Saves every page to MongoDB immediately. Re-runs update existing offers by `listing_id` and do not duplicate them.
-- Rebuilds `output/otomoto_oferty.csv` from the database after each batch.
+- Rebuilds `output/otomoto/otomoto_oferty.csv` from the database after each batch.
 
 Other options: `--pages` (default 3300), `--skip-mongo`.
 
@@ -63,12 +69,12 @@ Other options: `--pages` (default 3300), `--skip-mongo`.
 
 Both MongoDB containers require TLS and a username and password.
 
-```powershell
-bash scripts/gen_certs.sh
-copy .env.example .env
-```
+- `scripts/gen_certs.sh` creates a local CA (`certs/ca.pem`) and the server certificate (`certs/mongo.pem`). Python and Compass verify the server with `ca.pem`.
+- `.env` holds the users and passwords. Docker Compose creates the root users from it on the first start of an empty volume, and `src/config.py` reads it for connections.
+- `certs/` and `.env` are git-ignored, so every machine generates its own.
+- Old volumes created without authentication: run `docker compose down -v` first (this deletes the data in them).
 
-Edit `.env` and set the passwords, then `docker compose up -d`. `certs/` and `.env` are git-ignored. If you have old volumes created without authentication, run `docker compose down -v` first.
+MongoDB Compass: `mongodb://localhost:27017` or `:27018`, TLS on with CA file `certs/ca.pem`, username and password from `.env`, auth database `admin`.
 
 ## Hadoop and HDFS
 
@@ -99,6 +105,14 @@ Three jobs (Python 3 mapper and reducer in `hadoop/jobs/`), each reads the CSV f
 | `mileage_accidents` | mileage bin and accident flag (`Bin\|true/false/unknown`) | n, median price, mean price |
 
 `hadoop/jobs/common.py` joins multi-line quoted records, drops malformed ones and reports counters (`records`, `malformed`, `no_id`, `bad_price`, `valid`) to Hadoop. Prices outside 1 to 1 000 000 are dropped, as in the pandas cleaning. The jobs do not remove duplicate `listing_id`.
+
+### Hadoop results into MongoDB
+
+```powershell
+.\.venv\Scripts\python -m src.load_hadoop_results
+```
+
+Reads `output/hadoop/full/*.tsv` (`--source sample` for the sample run) and upserts the aggregates into `used_cars_agg` on the second MongoDB (`localhost:27018`, TLS and login): `agg_body_type`, `agg_make_year`, `agg_mileage_accidents`. The key `_id` is the aggregate key, so a re-run overwrites the same documents (`new 0`) and never duplicates them.
 
 ## Output
 

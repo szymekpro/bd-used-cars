@@ -8,6 +8,7 @@ MINI_CSV = ROOT / "data" / "samples" / "mini_listings.csv"
 OUTPUT_DIR = ROOT / "output"
 DATASET_OUTPUT_DIR = OUTPUT_DIR / "dataset"
 OTOMOTO_OUTPUT_DIR = OUTPUT_DIR / "otomoto"
+HADOOP_OUTPUT_DIR = OUTPUT_DIR / "hadoop"
 CA_FILE = ROOT / "certs" / "ca.pem"
 
 
@@ -50,6 +51,7 @@ MAX_MILEAGE = 500_000
 
 OTOMOTO_DB_NAME = "otomoto"
 OTOMOTO_COLLECTION = "offers"
+AGG_DB_NAME = "used_cars_agg"
 OTOMOTO_BASE_URL = "https://www.otomoto.pl"
 OTOMOTO_LIST_PATH = "/osobowe"
 OTOMOTO_USER_AGENT = "BigDataStudentProject/1.0"
