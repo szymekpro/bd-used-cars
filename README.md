@@ -114,6 +114,14 @@ Three jobs (Python 3 mapper and reducer in `hadoop/jobs/`), each reads the CSV f
 
 Reads `output/hadoop/full/*.tsv` (`--source sample` for the sample run) and upserts the aggregates into `used_cars_agg` on the second MongoDB (`localhost:27018`, TLS and login): `agg_body_type`, `agg_make_year`, `agg_mileage_accidents`. The key `_id` is the aggregate key, so a re-run overwrites the same documents (`new 0`) and never duplicates them.
 
+### Charts from the aggregates
+
+```powershell
+.\.venv\Scripts\python -m src.plot_aggregates
+```
+
+Reads `used_cars_agg` from the second MongoDB (TLS and login) and writes `output/hadoop/hadoop_nadwozie.png`, `hadoop_wypadki.png` and `hadoop_marki.png`.
+
 ## Output
 
 - `output/dataset/`: `statystyki.json`, `sample_clean.csv`, `cena_*.png`.

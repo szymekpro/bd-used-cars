@@ -19,3 +19,4 @@ output/hadoop/sample/
 output/hadoop/*/mongo_load.json
 docs
 .claude/
+~$*
