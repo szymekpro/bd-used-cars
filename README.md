@@ -59,6 +59,30 @@ Other options: `--pages` (default 3300), `--skip-mongo`.
 
 `franchise_dealer` is not collected: a company seller is not necessarily a dealer.
 
+## Security (TLS and login)
+
+Both MongoDB containers require TLS and a username and password.
+
+```powershell
+bash scripts/gen_certs.sh
+copy .env.example .env
+```
+
+Edit `.env` and set the passwords, then `docker compose up -d`. `certs/` and `.env` are git-ignored. If you have old volumes created without authentication, run `docker compose down -v` first.
+
+## Hadoop and HDFS
+
+`docker compose up -d` also starts HDFS (namenode, datanode) and YARN (resourcemanager, nodemanager) from `hadoop/Dockerfile`: Apache Hadoop 3.3.6 plus Python 3.6, which Hadoop Streaming needs.
+
+- NameNode UI: http://localhost:9870
+- YARN UI: http://localhost:8088
+
+```powershell
+bash scripts/hdfs_upload.sh
+```
+
+Puts `data/real/used_cars_data.csv` into `/data/used_cars/` (the full file) and the first 50000 lines into `/data/sample/` for quick job tests.
+
 ## Output
 
 - `output/dataset/`: `statystyki.json`, `sample_clean.csv`, `cena_*.png`.

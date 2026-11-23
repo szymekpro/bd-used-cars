@@ -1,18 +1,84 @@
+x-mongo-tls: &mongo-tls
+  image: mongo:7
+  command:
+    - "--tlsMode"
+    - "requireTLS"
+    - "--tlsCertificateKeyFile"
+    - "/certs/mongo.pem"
+    - "--tlsCAFile"
+    - "/certs/ca.pem"
+    - "--tlsAllowConnectionsWithoutCertificates"
+    - "--auth"
+
+x-hadoop: &hadoop
+  build: ./hadoop
+  image: bigdata-hadoop:3.3.6
+  env_file:
+    - ./hadoop/hadoop.env
+
 services:
   mongo:
-    image: mongo:7
+    <<: *mongo-tls
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_LOCAL_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_LOCAL_PASSWORD}
     ports:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
+      - ./certs:/certs:ro
 
   mongo-private:
-    image: mongo:7
+    <<: *mongo-tls
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_PRIVATE_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PRIVATE_PASSWORD}
     ports:
       - "27018:27017"
     volumes:
       - mongo_private_data:/data/db
+      - ./certs:/certs:ro
+
+  namenode:
+    <<: *hadoop
+    hostname: namenode
+    command:
+      - bash
+      - -c
+      - "[ -f /data/namenode/current/VERSION ] || hdfs namenode -format -nonInteractive; exec hdfs namenode"
+    ports:
+      - "9870:9870"
+    volumes:
+      - hdfs_name:/data/namenode
+      - ./data/real:/input:ro
+
+  datanode:
+    <<: *hadoop
+    hostname: datanode
+    command: ["hdfs", "datanode"]
+    depends_on:
+      - namenode
+    volumes:
+      - hdfs_data:/data/datanode
+
+  resourcemanager:
+    <<: *hadoop
+    hostname: resourcemanager
+    command: ["yarn", "resourcemanager"]
+    ports:
+      - "8088:8088"
+    depends_on:
+      - namenode
+
+  nodemanager:
+    <<: *hadoop
+    hostname: nodemanager
+    command: ["yarn", "nodemanager"]
+    depends_on:
+      - resourcemanager
 
 volumes:
+  hdfs_name:
+  hdfs_data:
   mongo_data:
   mongo_private_data:

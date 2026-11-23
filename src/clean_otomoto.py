@@ -1,5 +1,3 @@
-"""Czyszczenie ofert otomoto. Nazwy kolumn - jak w datasecie Kaggle (tam, gdzie to ten sam atrybut)."""
-
 from __future__ import annotations
 
 from datetime import datetime
@@ -28,7 +26,6 @@ def _in_range(value, low, high) -> bool:
 
 
 def clean_otomoto_offers(records: list[dict], scraped_at: datetime) -> tuple[list[dict], dict]:
-    """Zwraca dokumenty gotowe do MongoDB (listing_id jako klucz) oraz statystyki czyszczenia."""
     scrape_year = scraped_at.year
     stats = {
         "rows_in": len(records),

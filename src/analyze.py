@@ -1,5 +1,3 @@
-"""Analizy cen: dataset z CSV oraz oferty otomoto z bazy prywatnej. Miary wspólne dla obu źródeł."""
-
 from __future__ import annotations
 
 import json

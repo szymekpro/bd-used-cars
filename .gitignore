@@ -11,3 +11,6 @@ output/sample_clean.csv
 .pytest_cache/
 AGENTS.md
 konsultacje/
+.env
+certs/
+output/*.log

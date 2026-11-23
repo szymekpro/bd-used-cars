@@ -1,15 +1,3 @@
-"""Web scraping ofert z otomoto.pl (kategoria: osobowe) -> baza prywatna (baza otomoto) + CSV.
-
-Zasady:
-- robots.txt sprawdzany przed każdą stroną (urllib.robotparser); /osobowe nie jest w nim zablokowane,
-- odstęp między stronami (domyślnie 10 s, bo serwis używa DataDome),
-- co `--batch` ofert (domyślnie 1000) dłuższa przerwa (`--batch-pause`, domyślnie 180 s),
-- przy odpowiedzi 403/429 scraping się zatrzymuje - bez ponawiania, żeby nie nasilać blokady,
-- każda strona jest zapisywana do MongoDB od razu (idempotentnie, po listing_id), więc przerwany
-  scraping nie traci danych, a ponowne uruchomienie nie duplikuje ofert,
-- CSV (`output/otomoto/otomoto_oferty.csv`) jest odtwarzany z bazy po każdej paczce.
-"""
-
 from __future__ import annotations
 
 import argparse
@@ -71,7 +59,6 @@ def _seller(tokens: list[str]) -> str | None:
 
 
 def _location(tokens: list[str]) -> str | None:
-    # Lokalizacja to token w formie "Miasto (Województwo)".
     for token in tokens:
         if re.fullmatch(r".+\([^()]+\)", token) and len(token) < 80:
             return token
@@ -79,7 +66,6 @@ def _location(tokens: list[str]) -> str | None:
 
 
 def _model_from_url(url: str, brand: str | None) -> str | None:
-    # Slug oferty zaczyna się od marki, np. ".../hyundai-tucson-ID6IkmwC.html" -> "Tucson".
     slug = url.rsplit("/", 1)[-1].split("-ID")[0].lower()
     if not brand or not slug.startswith(brand.lower() + "-"):
         return None
@@ -135,7 +121,6 @@ def parse_listing_page(html: str, page: int) -> list[dict]:
 
 
 def _export_csv(csv_path, mongo: dict, all_docs: list[dict]) -> str:
-    # Z bazy (pełny stan kolekcji), a bez bazy - wszystkie oferty z tego przebiegu.
     export = read_otomoto() if mongo.get("ok") else pd.DataFrame(all_docs)
     try:
         export.to_csv(csv_path, index=False)

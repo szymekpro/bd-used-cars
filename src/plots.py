@@ -1,5 +1,3 @@
-"""Wykresy wspólne dla datasetu i otomoto. Kolumny: price, age_years, mileage, fuel_type, horsepower, voivodeship."""
-
 from __future__ import annotations
 
 from pathlib import Path
