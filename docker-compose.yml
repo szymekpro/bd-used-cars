@@ -51,6 +51,8 @@ services:
     volumes:
       - hdfs_name:/data/namenode
       - ./data/real:/input:ro
+      - ./hadoop/jobs:/jobs:ro
+      - ./output/hadoop:/results_local
 
   datanode:
     <<: *hadoop

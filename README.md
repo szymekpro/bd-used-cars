@@ -83,6 +83,23 @@ bash scripts/hdfs_upload.sh
 
 Puts `data/real/used_cars_data.csv` into `/data/used_cars/` (the full file) and the first 50000 lines into `/data/sample/` for quick job tests.
 
+### Hadoop Streaming jobs
+
+```powershell
+bash hadoop/run_jobs.sh sample
+bash hadoop/run_jobs.sh full
+```
+
+Three jobs (Python 3 mapper and reducer in `hadoop/jobs/`), each reads the CSV from HDFS and writes TSV into `output/hadoop/<sample|full>/`:
+
+| Job | Key | Output columns |
+|---|---|---|
+| `body_type` | body type | n, median price, mean price |
+| `make_year` | make and year (`Make\|Year`) | n, mean price |
+| `mileage_accidents` | mileage bin and accident flag (`Bin\|true/false/unknown`) | n, median price, mean price |
+
+`hadoop/jobs/common.py` joins multi-line quoted records, drops malformed ones and reports counters (`records`, `malformed`, `no_id`, `bad_price`, `valid`) to Hadoop. Prices outside 1 to 1 000 000 are dropped, as in the pandas cleaning. The jobs do not remove duplicate `listing_id`.
+
 ## Output
 
 - `output/dataset/`: `statystyki.json`, `sample_clean.csv`, `cena_*.png`.

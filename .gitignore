@@ -14,3 +14,5 @@ konsultacje/
 .env
 certs/
 output/*.log
+output/hadoop/sample/
+*.crc
